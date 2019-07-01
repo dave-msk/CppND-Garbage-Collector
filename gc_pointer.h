@@ -132,6 +132,7 @@ bool Pointer<T, size>::Collect() {
       ref_container_.erase(p);
       if (p->is_array) delete[] p->mem_ptr;
       else delete p->mem_ptr;
+      freed = true;
       break;
     }
   } while (p != ref_container_.end());
