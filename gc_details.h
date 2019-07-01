@@ -30,10 +30,7 @@ struct PtrDetails {
 template<typename T>
 bool operator==(const PtrDetails<T> &ob1,
                 const PtrDetails<T> &ob2) {
-  return ((ob1.mem_ptr == ob2.mem_ptr) && 
-          (ob1.refcount == ob2.refcount) &&
-          (ob1.is_array == ob2.is_array) &&
-          (ob1.array_size == ob2.array_size));
+  return ob1.mem_ptr == ob2.mem_ptr;
 }
 
 #endif  // CPPND_GARBAGE_COLLECTOR_GC_DETAILS_H_

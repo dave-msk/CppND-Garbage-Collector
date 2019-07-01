@@ -124,22 +124,17 @@ bool Pointer<T, size>::Collect() {
   // TODO: Implement Collect function
   bool freed = false;
 
-  auto p = ref_container_.begin();
+  typename std::list<PtrDetails<T>>::iterator p;
 
-  while (p != ref_container_.end()) {
-    if (p->refcount == 0) {
-      // Delete pointed object(s)
-      if (p->is_array)
-        delete[] p->mem_ptr;
-      else
-        delete p->mem_ptr;
-      // Remove PtrDetails
-      ref_container_.erase(p++);
-      freed = true;
-    } else {
-      ++p;
+  do {
+    for (p = ref_container_.begin(); p != ref_container_.end(); ++p) {
+      if (p->refcount > 0) continue;
+      ref_container_.erase(p);
+      if (p->is_array) delete[] p->mem_ptr;
+      else delete p->mem_ptr;
+      break;
     }
-  }
+  } while (p != ref_container_.end());
   return freed;
 }
 
@@ -244,9 +239,8 @@ template<typename T, int size>
 Pointer<T, size>::~Pointer() {
   auto ptr_info_it = FindPtrInfo(addr_);
   if (ptr_info_it != ref_container_.end()) {
-    --ptr_info_it->refcount;
-    if (ptr_info_it->refcount == 0)
-      Collect();
+    if (ptr_info_it->refcount > 0) --ptr_info_it->refcount;
+    if (ptr_info_it->refcount == 0) Collect();
   }
 }
 
