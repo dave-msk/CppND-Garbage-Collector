@@ -188,9 +188,9 @@ void swap(Pointer<T, size> &first, Pointer<T, size> &second) {
   // enable ADL
   using std::swap;
 
-  std::swap(first.addr_, second.addr_);
-  std::swap(first.is_array_, second.is_array_);
-  std::swap(first.array_size_, second.array_size_);
+  swap(first.addr_, second.addr_);
+  swap(first.is_array_, second.is_array_);
+  swap(first.array_size_, second.array_size_);
 }
 
 // Constructor for both initialized and uninitialized objects.
